@@ -1,0 +1,162 @@
+// ########## Contenedores ##########
+.full-page-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+// ########## Imagenes ##########
+.image-h-small {
+  img {
+    height: 100px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+.image-h-medium {
+  img {
+    height: 200px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+.image-h-large {
+  img {
+    height: 400px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+// ########## Inputs ##########
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  font-size: large;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+}
+
+input {
+  padding: 0.5rem;
+  background-color: #f8f9fd;
+  border: none;
+  width: 100%;
+}
+
+// ########## Botones ##########
+button {
+  font-weight: 500;
+  font-size: medium;
+  overflow: hidden;
+}
+
+.primary-button {
+  background-color: #efd77d;
+  color: #212121;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #efd67dd0;
+  }
+}
+
+.secondary-button {
+  background-color: #f4ebdc;
+  color: #212121;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #ffedcf94;
+  }
+}
+
+.ok-button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+.cancel-button {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #c82333;
+  }
+}
+
+// ########## Clases alertas ##########
+.text-error{
+  background-color: #c82333b0;
+  font-size: small;
+  font-weight: bold;
+  padding: .4rem;
+  transition: all 0.3s;
+  text-align: center;
+  width: 100%;
+}
+
+// ########## Clases animaciones ##########
+.float {
+  animation: float 3s infinite;
+}
+
+.image-float {
+  img {
+    animation: float 3s infinite;
+  }
+}
+
+// ########## Animaciones ##########
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+// ########## Extras ##########
+.hidden {
+  display: none;
+}
