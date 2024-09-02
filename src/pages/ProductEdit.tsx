@@ -1,8 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import UserLayout from '../layouts/UserLayout';
 import styles from '../styles/ProductCreate.module.scss';
 
-const ProductCreate: React.FC = () => {
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+}
+
+const ProductEdit: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
@@ -10,6 +22,24 @@ const ProductCreate: React.FC = () => {
   const [image, setImage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      const products: Product[] = JSON.parse(storedProducts);
+      const product = products.find((p) => p.id === parseInt(id ?? '', 10));
+
+      if (product) {
+        setTitle(product.title);
+        setPrice(product.price.toString());
+        setDescription(product.description);
+        setCategory(product.category);
+        setImage(product.image);
+      } else {
+        setError('Producto no encontrado');
+      }
+    }
+  }, [id]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -21,13 +51,7 @@ const ProductCreate: React.FC = () => {
     }
   };
 
-  const generateUniqueId = (products: any[]) => {
-    const ids = products.map(product => product.id);
-    const maxId = Math.max(0, ...ids);
-    return maxId + 1;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title || !price || !description || !category || !image) {
@@ -35,56 +59,36 @@ const ProductCreate: React.FC = () => {
       return;
     }
 
-    try {
-      const response = await fetch('https://fakestoreapi.com/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      let products: Product[] = JSON.parse(storedProducts);
+      const productIndex = products.findIndex((p) => p.id === parseInt(id ?? '', 10));
+
+      if (productIndex !== -1) {
+        products[productIndex] = {
+          id: parseInt(id ?? '', 10),
           title,
           price: parseFloat(price),
           description,
-          image,
           category,
-        }),
-      });
+          image,
+        };
 
-      if (!response.ok) {
-        throw new Error('Error al crear el producto.');
+        localStorage.setItem('products', JSON.stringify(products));
+        setSuccessMessage('Producto actualizado exitosamente.');
+        setError(null);
+        navigate('/products');
+      } else {
+        setError('Producto no encontrado para actualizar.');
       }
-
-      let newProduct = await response.json();
-
-      const storedProducts = localStorage.getItem('products');
-      let products = storedProducts ? JSON.parse(storedProducts) : [];
-
-      const existingProduct = products.find((product: any) => product.id === newProduct.id);
-      if (existingProduct) {
-        newProduct.id = generateUniqueId(products);
-      }
-
-      products.push(newProduct);
-
-      localStorage.setItem('products', JSON.stringify(products));
-
-      setTitle('');
-      setPrice('');
-      setDescription('');
-      setCategory('');
-      setImage(null);
-      setError(null);
-      setSuccessMessage('Producto creado y almacenado exitosamente.');
-    } catch (error) {
-      setError('Hubo un error al crear el producto. Inténtalo de nuevo más tarde.');
     }
   };
 
   return (
     <UserLayout>
       <div className={styles['create-product-container']}>
-        <h1>Crear nuevo producto</h1>
-        {error && <p className= {styles['text-error']} >{error}</p>}
+        <h1>Editar producto</h1>
+        {error && <p className={styles['text-error']}>{error}</p>}
         {successMessage && <p className={styles['text-success']}>{successMessage}</p>}
         <form onSubmit={handleSubmit}>
           <div>
@@ -128,15 +132,14 @@ const ProductCreate: React.FC = () => {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              required
             />
             {image && <img src={image} alt="Imagen del producto" />}
           </div>
-          <button type="submit">Crear producto</button>
+          <button type="submit">Actualizar producto</button>
         </form>
       </div>
     </UserLayout>
   );
 };
 
-export default ProductCreate;
+export default ProductEdit;

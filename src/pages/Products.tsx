@@ -9,36 +9,47 @@ const Products: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(2);
+  const [productsPerPage, setProductsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState<{ key: string, direction: string } | null>(null);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        if (!response.ok) {
-          throw new Error('Failed to fetch products');
-        }
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError('An unknown error occurred');
-        }
-      } finally {
-        setLoading(false);
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('https://fakestoreapi.com/products');
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
       }
-    };
+      const data = await response.json();
+      setProducts(data);
+      localStorage.setItem('products', JSON.stringify(data)); 
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchProducts();
+  useEffect(() => {
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      setProducts(JSON.parse(storedProducts));
+      setLoading(false);
+    } else {
+      fetchProducts();
+    }
   }, []);
 
-  // Filtrar productos según el término de búsqueda
+  const handleReloadProducts = () => {
+    setLoading(true);
+    fetchProducts();
+  };
+
   const filteredProducts = products.filter(product =>
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -59,8 +70,8 @@ const Products: React.FC = () => {
   // Paginación
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
 
   // Generar el rango de páginas a mostrar
   const pageNumbers = [];
@@ -80,7 +91,7 @@ const Products: React.FC = () => {
     pageNumbers.push(i);
   }
 
-const requestSort = (key: string) => {
+  const requestSort = (key: string) => {
     let direction = 'ascending';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
@@ -95,6 +106,10 @@ const requestSort = (key: string) => {
     return sortConfig.key === name ? sortConfig.direction : undefined;
   };
 
+  const handleProductsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setProductsPerPage(parseInt(e.target.value));
+    setCurrentPage(1);
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -107,7 +122,14 @@ const requestSort = (key: string) => {
   return (
     <UserLayout>
       <div className={styles['products-container']}>
-        <h1>Productos</h1>
+        <div className={styles['title-wrapper']}>
+          <h1>Productos</h1>
+
+          <button onClick={handleReloadProducts}>
+            Actualizar productos desde la API
+          </button>
+
+        </div>
 
         <input
           type="text"
@@ -115,6 +137,20 @@ const requestSort = (key: string) => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+
+        <div className={styles['items-per-page']}>
+          <label htmlFor="productsPerPage">Productos por página:</label>
+          <select
+            id="productsPerPage"
+            value={productsPerPage}
+            onChange={handleProductsPerPageChange}
+          >
+            <option value={2}>2</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </select>
+        </div>
 
         <table>
           <thead>

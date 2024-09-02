@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -14,7 +14,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState<{ login?: string, register?: string }>({});
   const [register, setRegister] = useState(false);
 
-  const { loggedIn, setLoggedIn } = useContext(AppContext)!;
+  const { loggedIn, login } = useContext(AppContext)!;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
       const email = (document.getElementById('logEmail') as HTMLInputElement).value;
       const password = (document.getElementById('logPass') as HTMLInputElement).value;
 
-      if ( !email || !password ){
+      if (!email || !password) {
         setError({ login: 'Campos incompletos.' });
         return;
       }
@@ -44,20 +44,18 @@ const Login: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           username: email,
           password: password
         }),
       });
 
       const data = await response.json();
-      console.log(data);
 
-      if ( response.ok ){
-        setLoggedIn(true);
+      if (response.ok) {
+        login(data.token);
         setError({ login: '' });
-        navigate('/products');
-      }else{
+      } else {
         setError({ login: data.message });
       }
 
@@ -74,12 +72,12 @@ const Login: React.FC = () => {
       const password = (document.getElementById('regPass') as HTMLInputElement).value;
       const confirmPass = (document.getElementById('regConfirmPass') as HTMLInputElement).value;
 
-      if ( !email || !password || !confirmPass ){
+      if (!email || !password || !confirmPass) {
         setError({ register: 'Campos incompletos.' });
         return;
       }
 
-      if ( password !== confirmPass ){
+      if (password !== confirmPass) {
         setError({ register: 'Las contraseñas no coinciden.' });
         return;
       }
@@ -89,7 +87,7 @@ const Login: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           username: email,
           password: password,
           role: 'user'
@@ -97,12 +95,10 @@ const Login: React.FC = () => {
       });
 
       const data = await response.json();
-      console.log(data);
 
-      if ( response.ok ){
-        setLoggedIn(true);
+      if (response.ok) {
+        login(data.token);
         setError({ register: '' });
-        navigate('/products');
       }
     } catch (error) {
       setError({ register: 'An error occurred. Please try again later.' });
@@ -111,91 +107,91 @@ const Login: React.FC = () => {
 
   return (
     <Layout>
-      <div className={ clsx(general['full-page-wrapper'], styles['login-main-wrapper']) }>
-        <h1 className={ general.hidden }> Inicio de sesion react test Juan Carlos Ceballos </h1>
-        <div className={ clsx(styles['form-card']) }>
-          <div className={ register ? styles['collapsed'] : '' } >
+      <div className={clsx(general['full-page-wrapper'], styles['login-main-wrapper'])}>
+        <h1 className={general.hidden}>Inicio de sesión react test Juan Carlos Ceballos</h1>
+        <div className={clsx(styles['form-card'])}>
+          <div className={register ? styles['collapsed'] : ''}>
             <h2>Iniciar Sesión</h2>
-            <div className={ styles['input-wrapper'] } >
+            <div className={styles['input-wrapper']}>
               <Input
                 _id="logEmail"
                 title="Correo Electrónico"
                 type="text"
                 placeholder="example@rbduck.com"
-                className={ general['input-wrapper'] }
-                validations={ ['notEmpty', 'email'] }
+                className={general['input-wrapper']}
+                validations={['notEmpty', 'email']}
               />
               <Input
                 _id="logPass"
                 title="Contraseña"
                 type="password"
                 placeholder="********"
-                className={ general['input-wrapper'] }
-                validations={ ['notEmpty'] }
+                className={general['input-wrapper']}
+                validations={['notEmpty']}
               />
-              <p className={ error.login ? general['text-error'] : '' } > { error.login ? error.login : '' } </p>
+              <p className={error.login ? general['text-error'] : ''}>{error.login ? error.login : ''}</p>
             </div>
-            <div className={ styles['button-wrapper'] }>
-              <button className={ general['primary-button'] } onClick={ handleLogin }>
+            <div className={styles['button-wrapper']}>
+              <button className={general['primary-button']} onClick={handleLogin}>
                 Iniciar Sesión
               </button>
 
-              <button className={ general['secondary-button'] } onClick={ handleIsRegister }>
+              <button className={general['secondary-button']} onClick={handleIsRegister}>
                 Registrar
               </button>
             </div>
           </div>
-          
+
           <div>
             <Image
-              src= { register ? '/assets/decorative/register.svg' : '/assets/decorative/login.svg' }
+              src={register ? '/assets/decorative/register.svg' : '/assets/decorative/login.svg'}
               alt="Imagen no encontrada"
-              placeholderSrc= { register ? '/assets/decorative/register.svg' : '/assets/decorative/login.svg' }
-              className={ clsx(general['image-w-medium']) }
+              placeholderSrc={register ? '/assets/decorative/register.svg' : '/assets/decorative/login.svg'}
+              className={clsx(general['image-w-medium'])}
             />
           </div>
 
-          <div className={ !register ? styles['collapsed'] : '' } >
+          <div className={!register ? styles['collapsed'] : ''}>
             <h2>Registrar</h2>
-            <div className={ styles['input-wrapper'] } >
+            <div className={styles['input-wrapper']}>
               <Input
                 _id="regEmail"
                 title="Correo Electrónico"
                 type="text"
                 placeholder="example@rbduck.com"
-                className={ general['input-wrapper'] }
-                validations={ ['notEmpty', 'email'] }
+                className={general['input-wrapper']}
+                validations={['notEmpty', 'email']}
               />
               <Input
                 _id="regPass"
                 title="Contraseña"
                 type="password"
                 placeholder="********"
-                className={ general['input-wrapper'] }
-                validations={ ['notEmpty', 'password'] }
+                className={general['input-wrapper']}
+                validations={['notEmpty', 'password']}
               />
               <Input
                 _id="regConfirmPass"
                 title="Confirmar Contraseña"
                 type="password"
                 placeholder="********"
-                className={ general['input-wrapper'] }
-                validations={ ['notEmpty', 'confirm-pass'] }
+                className={general['input-wrapper']}
+                validations={['notEmpty', 'confirm-pass']}
                 confimationID="regPass"
               />
             </div>
-            <p className={ error.register ? general['text-error'] : '' } > { error.register ? error.register : '' } </p>
-            <div className={ styles['button-wrapper'] }>
-              <button className={ general['primary-button'] } onClick={ handleRegister }>
+            <p className={error.register ? general['text-error'] : ''}>{error.register ? error.register : ''}</p>
+            <div className={styles['button-wrapper']}>
+              <button className={general['primary-button']} onClick={handleRegister}>
                 Registrarme!
               </button>
 
-              <button className={ general['secondary-button'] } onClick={ handleIsRegister }>
+              <button className={general['secondary-button']} onClick={handleIsRegister}>
                 Cancelar
               </button>
             </div>
-            
-          </div>          
+
+          </div>
         </div>
       </div>
     </Layout>
