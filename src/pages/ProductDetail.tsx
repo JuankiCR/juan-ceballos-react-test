@@ -1,11 +1,15 @@
 import React from 'react';
 
-const ProductDetail: React.FC = () => {
+import UserLayout from '../layouts/UserLayout';
+
+const ProductCreate: React.FC = () => {
   return (
-    <div>
-      <h1>Página detalles de producto.</h1>
-    </div>
+    <UserLayout>
+      <div>
+        <h1>Página detalle de producto.</h1>
+      </div>
+    </UserLayout>
   );
 };
 
-export default ProductDetail;
+export default ProductCreate;
