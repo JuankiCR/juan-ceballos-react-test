@@ -1,0 +1,21 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body
+{
+  background-color: #f8f9fd;
+  background: radial-gradient(circle, transparent 20%, #f8f9fd 20%, #f8f9fd 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, #f8f9fd 20%, #f8f9fd 80%, transparent 80%, transparent) 10px 10px, linear-gradient(#857abe 0.8px, transparent 0.8px) 0 -0.4px, linear-gradient(90deg, #857abe 0.8px, #f8f9fd 0.8px) -0.4px 0;
+  background-size: 20px 20px, 20px 20px, 10px 10px, 10px 10px;
+  font-family: 'Roboto', sans-serif;
+}	
+
+.container
+{
+  h1
+  {
+    color: #333;
+  }
+}

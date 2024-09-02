@@ -1,10 +1,41 @@
-.not-found-wrapper
-{
+.not-found-wrapper{
   gap: 2rem;
 
-  h1
-  {
-    max-width: 80%;
+  .not-found-title {
+    color: #212f4d;
+    font-size: 3rem;
+    font-weight: bold;
+    padding: .3rem;
+    position: relative;
+    max-width: 50%;
     text-align: center;
+
+    &::before, &::after{
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+
+    &::before{
+      background-color: #5f749c;
+      translate: -0.3em -0.3rem;
+
+    }
+
+    &::after{
+      background-color: #efd77d;
+      translate: 0.3rem 0.3rem;
+
+    }
+
+    @media screen and (max-width: 700px){
+      max-width: 80%;
+      font-size: 1.6rem;
+    }
   }
+}
+
+.not-found-button{
+  font-size: 1.6rem;
 }

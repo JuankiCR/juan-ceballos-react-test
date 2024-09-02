@@ -36,6 +36,33 @@
   }
 }
 
+.image-w-small {
+  img {
+    height: auto;
+    width: 100px;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+.image-w-medium {
+  img {
+    height: auto;
+    width: 200px;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+.image-w-large {
+  img {
+    height: auto;
+    width: 400px;
+    display: block;
+    object-fit: contain;
+  }
+}
+
 // ########## Inputs ##########
 .input-wrapper {
   display: flex;
