@@ -2,8 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
-import Layout from '../ui/Layout';
+import Layout from '../layouts/FullLayout';
 import Input from '../components/Input';
+import Image from '../components/Image';
 import { AppContext } from '../context/AppContext';
 
 import general from './AllPages.module.scss';
@@ -144,7 +145,16 @@ const Login: React.FC = () => {
               </button>
             </div>
           </div>
-          <div/>
+          
+          <div>
+            <Image
+              src= { register ? '/assets/decorative/register.svg' : '/assets/decorative/login.svg' }
+              alt="Imagen no encontrada"
+              placeholderSrc= { register ? '/assets/decorative/register.svg' : '/assets/decorative/login.svg' }
+              className={ clsx(general['image-w-medium']) }
+            />
+          </div>
+
           <div className={ !register ? styles['collapsed'] : '' } >
             <h2>Registrar</h2>
             <div className={ styles['input-wrapper'] } >

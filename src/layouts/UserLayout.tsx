@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
-import styles from './Layout.module.scss';
+import styles from './UserLayout.module.scss';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const UserLayout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className={ styles.container }>
       { children }
@@ -13,4 +13,4 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 };
 
-export default Layout;
+export default UserLayout;

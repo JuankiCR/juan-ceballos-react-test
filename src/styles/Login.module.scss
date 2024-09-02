@@ -20,6 +20,8 @@
 
     &:nth-child(even){
       background: url('../../public/assets/decorative/bg.svg') no-repeat center center;
+      display: flex;
+      justify-content: center;
       width: 50%;
     }
 

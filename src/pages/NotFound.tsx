@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
-import Layout from '../ui/Layout';
+import Layout from '../layouts/FullLayout';
 import Image from '../components/Image';
 
 import general from './AllPages.module.scss';
@@ -31,7 +31,7 @@ const NotFound: React.FC = () => {
     <Layout>
       <div className={ clsx(general['full-page-wrapper'], styles['not-found-wrapper']) }>
         
-        <h1> { randomPhrase } </h1>
+        <h1 className={ styles['not-found-title'] }> { randomPhrase } </h1>
       
         <Image
           src="/assets/decorative/notfound.png"
@@ -40,7 +40,7 @@ const NotFound: React.FC = () => {
           className={ clsx(general['image-h-large'], general['image-float']) }
         />
 
-        <button className={ general['primary-button'] } onClick={ handleReturn }>
+        <button className={ clsx(general['primary-button'], styles['not-found-button']) } onClick={ handleReturn }>
           Regresar
         </button>
 
