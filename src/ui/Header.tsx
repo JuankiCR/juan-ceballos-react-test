@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import styles from './Header.module.scss';
+import general from '../pages/AllPages.module.scss';
+
 const Header: React.FC = () => {
   return (
-    <header>
+    <header className={ styles.navbar }>
       <div>
         <Link to="/">
           <img src="/assets/logos/logo192.png" alt="Logo" />
         </Link>
-        <h1>jCeballos | React Test</h1>
+        <h1>React Test | jceballos</h1>
       </div>
       
       <nav>
@@ -23,7 +26,7 @@ const Header: React.FC = () => {
       </nav>
       
       <div>
-        <button>Salir</button>
+        <button className={ general['cancel-button'] }>Salir</button>
       </div>
     </header>
   );
