@@ -1,10 +1,14 @@
 import React from 'react';
 
+import UserLayout from '../layouts/UserLayout';
+
 const ProductCreate: React.FC = () => {
   return (
-    <div>
-      <h1>Página crear productos.</h1>
-    </div>
+    <UserLayout>
+      <div>
+        <h1>Página crear productos.</h1>
+      </div>
+    </UserLayout>
   );
 };
 
